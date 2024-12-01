@@ -4,7 +4,6 @@ import com.example.ms.basic.entity.Language;
 import com.example.ms.basic.service.LanguageService;
 import com.example.ms.controller.BaseController;
 import com.example.tools.entity.Insert;
-import com.example.tools.entity.Log;
 import com.example.tools.entity.ResponseData;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.validation.annotation.Validated;
