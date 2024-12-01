@@ -33,5 +33,5 @@
 7. 启动GatewayApplication
 启动成功后，可到浏览器访问http://localhost:8092/api-docs可以看到系统的swagger界面。
 在右上角的Select a definition处可以切换不同模块的swagger，效果如下图：
-![alt text](snapshot/屏幕截图_swagger_Basic_module.png)
-![alt text](snapshot/屏幕截图_swagger_Security_module.png)
+![alt text](screenshot/屏幕截图_swagger_Basic_module.png)
+![alt text](screenshot/屏幕截图_swagger_Security_module.png)
