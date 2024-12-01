@@ -1,0 +1,106 @@
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+allprojects {
+    group 'com.example.ms'
+    version '1.0-SNAPSHOT'
+}
+
+ext {
+    configuration = [
+            javaVersion = JavaVersion.VERSION_17
+    ]
+
+    libraries = [
+            mybatisDynamicVersion = '1.5.0',
+            mybatisSpringBootStarterVersion = '3.0.3',
+            springBoot3Version = '3.2.4',
+            springCloudVersion = '2023.0.1',
+            springCloudAlibabaVersion = '2023.0.1.0',
+            springdocVersion = '2.4.0',
+            jwtVersion = '4.4.0',
+            junitVersion = '5.9.0',
+    ]
+
+    lib = [
+            "spring-starter-web"         : "org.springframework:spring-boot-starter-web",
+            "spring-starter-security"    : "org.springframework:spring-boot-starter-security",
+            "spring-starter-redis"       : "org.springframework.boot:spring-boot-starter-data-redis",
+            "spring-starter-validation"  : "org.springframework.boot:spring-boot-starter-validation",
+            "mybatis-dynamic-sql"        : "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${mybatisDynamicVersion}",
+            "mybatis-spring-boot-starter": "org.mybatis.spring.boot:mybatis-spring-boot-starter:${mybatisSpringBootStarterVersion}",
+            "springdoc"                  : "org.springdoc:springdoc-openapi-starter-webmvc-ui:${springdocVersion}",
+            "jwt"                        : "com.auth0:java-jwt:${jwtVersion}",
+            //test
+            "junit-jupiter"              : "org.junit.jupiter:junit-jupiter:${junitVersion}",
+            "spring-boot-starter-test"   : "org.springframework.boot:spring-boot-starter-test",
+            "mybatis-spring-starter-test": "org.mybatis.spring.boot:mybatis-spring-boot-starter-test:${mybatisSpringBootStarterVersion}",
+            "spring-security-test"       : "org.springframework.security:spring-security-test",
+            //datasource
+            "mysql"                      : "com.mysql:mysql-connector-j",
+    ]
+}
+
+subprojects {
+    apply plugin: 'idea'
+    apply plugin: 'java-library'
+    apply plugin: "io.freefair.lombok"
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = "${javaVersion}"
+    targetCompatibility = "${javaVersion}"
+
+    lombok {
+        version = "1.18.30"
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "https://maven.aliyun.com/repository/public" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        mavenCentral()
+    }
+
+    configurations {
+        all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+    }
+
+    dependencies {
+        implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.springframework.cloud:spring-cloud-starter'
+        implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+        implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+        implementation 'com.alibaba.cloud:spring-cloud-starter-alibaba-nacos-discovery'
+        implementation 'org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.5.0'
+        implementation 'com.auth0:java-jwt:4.4.0'
+        implementation 'org.projectlombok:lombok'
+        implementation 'com.alicp.jetcache:jetcache-redis-springdata:2.7.3'
+        implementation 'com.alicp.jetcache:jetcache-starter-redis:2.7.3'
+        implementation 'com.alicp.jetcache:jetcache-starter-redis-lettuce:2.7.3'
+        implementation 'org.apache.poi:poi:5.2.5'
+        implementation 'org.apache.poi:poi-ooxml:5.2.5'
+        runtimeOnly 'com.mysql:mysql-connector-j'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    dependencyManagement {
+        // 导入SpringBoot和SpringCloud依赖Bom
+        imports {
+            mavenBom SpringBootPlugin.BOM_COORDINATES
+            mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBoot3Version}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom "com.alibaba.cloud:spring-cloud-alibaba-dependencies:${springCloudAlibabaVersion}"
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+}

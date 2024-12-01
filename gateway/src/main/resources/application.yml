@@ -1,0 +1,86 @@
+server:
+  port: 8092
+
+spring:
+  application:
+    name: gateway
+  datasource:
+    url: jdbc:mysql://localhost:3307/managementsystem?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC&allowMultiQueries=true&rewriteBatchedStatements=true
+    username: root
+    password: 123456
+  cloud:
+    # Spring Cloud Gateway 配置项，对应 GatewayProperties 类
+    gateway:
+      # 缓存requestBody的过滤器，主要是为了记录请求到数据库表中
+      default-filters:
+        - name: CacheRequestBody
+          args:
+            bodyClass: java.lang.String
+      # 路由配置项，对应 RouteDefinition 数组
+      routes:
+        - id: yudaoyuanma # 路由的编号
+          uri: http://www.iocoder.cn # 路由到的目标地址
+          predicates: # 断言，作为路由的匹配条件，对应 RouteDefinition 数组
+            - Path=/blog
+          filters:
+            - StripPrefix=1
+        - id: security-module # 路由的编号
+          uri: lb://security-module # 路由的目标地址
+          predicates: # 断言，作为路由的匹配条件，对应 RouteDefinition 数组
+            - Path=/security-module
+
+      # 与 Spring Cloud 注册中心的集成，对应 DiscoveryLocatorProperties 类
+      discovery:
+        locator:
+          enabled: true # 是否开启，默认为 false 关闭
+          url-expression: "'lb://' + serviceId" # 路由的目标地址的表达式，默认为 "'lb://' + serviceId"
+
+    # Nacos 作为注册中心的配置项
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848 # Nacos 服务器地址
+
+# createName和updateName字段使用的用户类的字段名称
+user-name-field: displayName
+# 用户缓存的key
+user-cache-key: userCache.
+user-role-field: roles
+user-auth-field: authList
+
+# token过期时间，以分钟为单位
+token-expire: 30
+# token刷新过期时间，以小时为单位
+token-refresh-expire: 2
+
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+      limit: 10000000
+      expireAfterWriteInMillis: 600000
+  remote:
+    default:
+      type: redis.springdata
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      poolConfig:
+        minIdle: 5
+        maxIdle: 20
+        maxTotal: 50
+      host: localhost
+      port: 6379
+
+springdoc:
+  api-docs:
+    enabled: true
+  version: 1.0
+  webjars:
+    # 设置为空，不要前缀
+    prefix:
+  swagger-ui:
+    path: /api-docs
+    disable-swagger-default-url: true

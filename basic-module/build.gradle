@@ -1,0 +1,4 @@
+dependencies {
+    api project(":common-module")
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.4.0'
+}

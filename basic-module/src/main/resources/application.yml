@@ -1,0 +1,62 @@
+server:
+  port: 8093
+#  servlet:
+#    context-path: /ms
+
+spring:
+  application:
+    name: basic-module
+  datasource:
+    url: jdbc:mysql://localhost:3307/managementsystem?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC&allowMultiQueries=true&rewriteBatchedStatements=true
+    username: root
+    password: 123456
+  cloud:
+    nacos:
+      # Nacos 作为注册中心的配置项
+      discovery:
+        server-addr: 127.0.0.1:8848 # Nacos 服务器地址 "'lb://'+serviceId"
+
+springdoc:
+  api-docs:
+    enabled: true
+  version: 1.0
+  swagger-ui:
+    path: /api-docs
+    disable-swagger-default-url: true
+
+sqltable-instance-class-name: com.example.ms.basic.sqltable.SqlTableInstance
+# token过期时间，以分钟为单位
+token-expire: 30
+# token刷新过期时间，以小时为单位
+token-refresh-expire: 2
+
+# createName和updateName字段使用的用户类的字段名称
+user-name-field: displayName
+# 用户缓存的key
+user-cache-key: userCache.
+user-role-field: roles
+user-auth-field: authList
+
+mybatis-mapper-package: com.example.ms.basic.mapper
+
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+      limit: 10000000
+      expireAfterWriteInMillis: 600000
+  remote:
+    default:
+      type: redis.springdata
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      poolConfig:
+        minIdle: 5
+        maxIdle: 20
+        maxTotal: 50
+      host: localhost
+      port: 6379
