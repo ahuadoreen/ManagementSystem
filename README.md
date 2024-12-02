@@ -1,6 +1,7 @@
 # ManagementSystem
 这是一个基于Spring boot，Spring Cloud，mybatis dynamic sql开发的可快速进行后端系统开发的管理系统开发框架。  
-系统采用最新的Spring boot 3.2版本开发，封装了可用于快速开发CRUD功能的基类工具类。开发者仅需创建好必须的entity类，数据库表类，及继承基类的mapper，service，controller类或接口，就能快速的实现单表的CRUD功能。
+系统采用最新的Spring boot 3.2版本开发，封装了可用于快速开发CRUD功能的基类工具类。开发者仅需创建好必须的entity类，数据库表类，及继承基类的mapper，service，controller类或接口，就能快速的实现单表的CRUD功能。  
+可搭配vue版本的前端构成完整的管理系统开发平台，https://github.com/ahuadoreen/element-ms
 
 ## 使用技术
 - Spring boot 3.2
